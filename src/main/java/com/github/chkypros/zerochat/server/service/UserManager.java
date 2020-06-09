@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -16,6 +17,10 @@ public class UserManager {
 
     public Set<User> getConnectedUsers() {
         return connectedUsers;
+    }
+
+    public Optional<User> findUser(String identifier) {
+        return connectedUsers.stream().filter(u -> u.getIdentifier().equals(identifier)).findAny();
     }
 
     public void registerUser(User user) {

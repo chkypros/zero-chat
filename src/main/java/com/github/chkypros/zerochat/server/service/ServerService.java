@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -25,6 +26,11 @@ public class ServerService {
     }
 
     public void registerUser(User user) {
+        Optional<User> existingUser = userManager.findUser(user.getIdentifier());
+        if (existingUser.isPresent()) {
+            throw new IllegalStateException("User Identifier " + user.getIdentifier() + " is taken.");
+        }
+
         log.info("User {} connected from {}", user.getIdentifier(), user.getIpAddr());
         userManager.registerUser(user);
     }

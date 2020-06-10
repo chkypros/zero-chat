@@ -15,10 +15,12 @@ import java.util.Set;
 @Profile("server")
 public class ServerService {
     private final UserManager userManager;
+    private final ChatSetterUpper chatSetterUpper;
 
     @Autowired
-    public ServerService(UserManager userManager) {
+    public ServerService(UserManager userManager, ChatSetterUpper chatSetterUpper) {
         this.userManager = userManager;
+        this.chatSetterUpper = chatSetterUpper;
     }
 
     public Set<User> getConnectedUsers() {
@@ -36,9 +38,6 @@ public class ServerService {
     }
 
     public void connectToUser(ConnectRequest connectRequest) {
-        String sender = connectRequest.getSenderId();
-        String recipient = connectRequest.getRecipientId();
-        log.info("Received connect request: {} -> {}", sender, recipient);
-        userManager.connectToUser(sender, recipient);
+        chatSetterUpper.setup(connectRequest);
     }
 }

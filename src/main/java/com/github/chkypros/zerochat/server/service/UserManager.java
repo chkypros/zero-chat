@@ -20,15 +20,13 @@ public class UserManager {
     }
 
     public Optional<User> findUser(String identifier) {
-        return connectedUsers.stream().filter(u -> u.getIdentifier().equals(identifier)).findAny();
+        return connectedUsers.stream()
+                .filter(u -> u.getIdentifier().equals(identifier))
+                .findAny();
     }
 
     public void registerUser(User user) {
         log.info("User {} connected from {}", user.getIdentifier(), user.getIpAddr());
         connectedUsers.add(user);
-    }
-
-    public void connectToUser(String sender, String recipient) {
-        log.info("Received connect request: {} -> {}", sender, recipient);
     }
 }

@@ -5,15 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @Slf4j
 @Service
 @Profile("server")
 public class UserManager {
-    private final Set<User> connectedUsers = new HashSet<>();
+    private final Set<User> connectedUsers = new ConcurrentSkipListSet<>();
 
     public Set<User> getConnectedUsers() {
         return connectedUsers;

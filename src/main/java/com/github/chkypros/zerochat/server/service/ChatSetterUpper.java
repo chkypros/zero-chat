@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@Profile("sender")
+@Profile("server")
 public class ChatSetterUpper {
     private final UserManager userManager;
 

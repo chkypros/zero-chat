@@ -1,6 +1,10 @@
 package com.github.chkypros.zerochat.entities;
 
-public record User(String identifier, String ipAddr) implements Comparable<User> {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serializable;
+
+public record User(@JsonProperty("identifier") String identifier, @JsonProperty("ipAddr") String ipAddr) implements Comparable<User>, Serializable {
 
     public User(User other) {
         this(other.identifier, other.ipAddr);

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -28,14 +27,18 @@ public class ServerService {
         return userManager.getConnectedUsers();
     }
 
-    public void registerUser(User user) {
-        Optional<User> existingUser = userManager.findUser(user.identifier());
-        if (existingUser.isPresent()) {
-            throw new IllegalStateException("User Identifier " + user.identifier() + " is taken.");
-        }
+    public boolean usernameExists(String username) {
+        return userManager.usernameExists(username);
+    }
 
-        log.info("User {} connected from {}", user.identifier(), user.ipAddr());
+    public void registerUser(User user) {
+        log.info("User {} connecting from {}", user.identifier(), user.ipAddr());
         userManager.registerUser(user);
+    }
+
+    public void unregisterUser(User user) {
+        log.info("User {} disconnecting", user.identifier());
+        userManager.unregisterUser(user);
     }
 
     public void connectToUser(ConnectRequest connectRequest) {

@@ -27,8 +27,25 @@ public class UserManager {
                 .findAny();
     }
 
+    public boolean usernameExists(String username) {
+        return findUser(username).isPresent();
+    }
+
     public void registerUser(User user) {
+        if (usernameExists(user.identifier())) {
+            throw new IllegalStateException("User Identifier " + user.identifier() + " is taken.");
+        }
+
         log.info("User {} connected from {}", user.identifier(), user.ipAddr());
         connectedUsers.add(user);
+    }
+
+    public void unregisterUser(User user) {
+        if (!usernameExists(user.identifier())) {
+            throw new IllegalStateException("User Identifier " + user.identifier() + " does not exist.");
+        }
+
+        log.info("User {} disconnected from {}", user.identifier(), user.ipAddr());
+        connectedUsers.remove(user);
     }
 }

@@ -1,4 +1,4 @@
-package com.github.chkypros.zerochat.client;
+package com.github.chkypros.zerochat.client.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,8 @@ public class ClientService {
         serverUrl = server_url;
     }
 
-    public void connect() {
+    public boolean connect() {
         log.info("Contacting server @ {}", serverUrl);
+        return true;
     }
 }

@@ -8,14 +8,14 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 @ShellComponent
-public class ClientMainWindowCommands {
+public class MainWindowCommands {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientMainWindowCommands.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainWindowCommands.class);
 
     private final ClientService clientService;
 
     @Autowired
-    public ClientMainWindowCommands(ClientService clientService) {
+    public MainWindowCommands(ClientService clientService) {
         this.clientService = clientService;
     }
 

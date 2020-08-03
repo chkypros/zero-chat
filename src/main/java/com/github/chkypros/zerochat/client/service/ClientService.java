@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class ClientService {
@@ -11,12 +12,17 @@ public class ClientService {
 
     private final String serverUrl;
 
-    public ClientService(@Value("{application.server.url.base}") String server_url) {
+    // TODO Switch to WebSockets
+    private RestTemplate restTemplate;
+
+    public ClientService(@Value("{application.server.url}") String server_url) {
         serverUrl = server_url;
     }
 
     public boolean connect() {
         log.info("Contacting server @ {}", serverUrl);
+
+        // TODO Use RestTemplate to connect to server
         return true;
     }
 }

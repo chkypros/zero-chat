@@ -1,6 +1,6 @@
 package com.github.chkypros.zerochat.server.service;
 
-import com.github.chkypros.zerochat.entities.ConnectRequest;
+import com.github.chkypros.zerochat.entities.ChatRequest;
 import com.github.chkypros.zerochat.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +18,13 @@ public class ChatSetterUpper {
         this.userManager = userManager;
     }
 
-    public void setup(ConnectRequest connectRequest) {
-        User sender = userManager.findUser(connectRequest.senderId())
+    public String setup(ChatRequest chatRequest) {
+        User sender = userManager.findUser(chatRequest.senderId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid sender Id"));
-        User recipient = userManager.findUser(connectRequest.recipientId())
+        User recipient = userManager.findUser(chatRequest.recipientId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid recipient Id"));
         log.info("Received connect request: {} -> {}", sender, recipient);
 
+        return recipient.ipAddr();
     }
 }

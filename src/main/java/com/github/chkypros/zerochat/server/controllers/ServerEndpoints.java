@@ -1,6 +1,6 @@
 package com.github.chkypros.zerochat.server.controllers;
 
-import com.github.chkypros.zerochat.entities.ConnectRequest;
+import com.github.chkypros.zerochat.entities.ChatRequest;
 import com.github.chkypros.zerochat.entities.User;
 import com.github.chkypros.zerochat.server.service.ServerService;
 import org.springframework.context.annotation.Profile;
@@ -18,7 +18,7 @@ public class ServerEndpoints {
     }
 
     @GetMapping("/users")
-    public Set<User> getConnectedUsers() {
+    public Set<String> getConnectedUsers() {
         return service.getConnectedUsers();
     }
 
@@ -28,8 +28,8 @@ public class ServerEndpoints {
     }
 
     @PostMapping("/register")
-    public void registerUser(@RequestBody User user) {
-        service.registerUser(user);
+    public String registerUser(@RequestBody User user) {
+        return service.registerUser(user);
     }
 
     @PostMapping("/unregister")
@@ -38,7 +38,7 @@ public class ServerEndpoints {
     }
 
     @PostMapping("/connect")
-    public void connectToUser(@RequestBody ConnectRequest connectRequest) {
-        service.connectToUser(connectRequest);
+    public String connectToUser(@RequestBody ChatRequest chatRequest) {
+        return service.connectToUser(chatRequest);
     }
 }

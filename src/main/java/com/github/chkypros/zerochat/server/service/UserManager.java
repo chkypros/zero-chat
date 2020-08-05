@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.stream.Collectors;
 
 @Service
 @Profile("server")
@@ -17,8 +18,8 @@ public class UserManager {
 
     private final Set<User> connectedUsers = new ConcurrentSkipListSet<>();
 
-    public Set<User> getConnectedUsers() {
-        return connectedUsers;
+    public Set<String> getConnectedUsers() {
+        return connectedUsers.stream().map(User::identifier).collect(Collectors.toSet());
     }
 
     public Optional<User> findUser(String identifier) {
@@ -31,13 +32,13 @@ public class UserManager {
         return findUser(username).isPresent();
     }
 
-    public void registerUser(User user) {
+    public boolean registerUser(User user) {
         if (usernameExists(user.identifier())) {
             throw new IllegalStateException("User Identifier " + user.identifier() + " is taken.");
         }
 
         log.info("User {} connected from {}", user.identifier(), user.ipAddr());
-        connectedUsers.add(user);
+        return connectedUsers.add(user);
     }
 
     public void unregisterUser(User user) {

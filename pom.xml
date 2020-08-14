@@ -12,7 +12,14 @@
     <artifactId>zero-chat</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>zero-chat</name>
+    <packaging>pom</packaging>
     <description>A no-persistence (zero footprint) chat app</description>
+
+    <modules>
+        <module>zero-chat-entities</module>
+        <module>zero-chat-client</module>
+        <module>zero-chat-server</module>
+    </modules>
 
     <properties>
         <java.version>14</java.version>
@@ -51,14 +58,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-<!--        Explicit to Client module -->
-        <dependency>
-            <groupId>org.springframework.shell</groupId>
-            <artifactId>spring-shell-starter</artifactId>
-            <version>2.0.0.RELEASE</version>
-        </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.chkypros</groupId>
+                <artifactId>zero-chat-entities</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

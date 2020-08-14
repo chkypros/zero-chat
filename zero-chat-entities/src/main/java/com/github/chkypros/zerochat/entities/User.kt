@@ -1,17 +1,12 @@
-package com.github.chkypros.zerochat.entities;
+package com.github.chkypros.zerochat.entities
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 
-import java.io.Serializable;
+data class User(@JsonProperty("identifier") val identifier: String, @JsonProperty("ipAddr") val ipAddr: String) : Comparable<User>, Serializable {
 
-public record User(@JsonProperty("identifier") String identifier, @JsonProperty("ipAddr") String ipAddr) implements Comparable<User>, Serializable {
-
-    public User(User other) {
-        this(other.identifier, other.ipAddr);
+    override fun compareTo(other: User): Int {
+        return identifier.compareTo(other.identifier, true)
     }
 
-    @Override
-    public int compareTo(User other) {
-        return identifier.compareToIgnoreCase(other.identifier);
-    }
 }

@@ -18,12 +18,12 @@ public class ChatSetterUpper {
     }
 
     public String setup(ChatRequest chatRequest) {
-        User sender = userManager.findUser(chatRequest.senderId())
+        User sender = userManager.findUser(chatRequest.getSenderId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid sender Id"));
-        User recipient = userManager.findUser(chatRequest.recipientId())
+        User recipient = userManager.findUser(chatRequest.getRecipientId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid recipient Id"));
         log.info("Received connect request: {} -> {}", sender, recipient);
 
-        return recipient.ipAddr();
+        return recipient.getIpAddr();
     }
 }

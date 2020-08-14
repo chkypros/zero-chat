@@ -4,6 +4,7 @@ import com.github.chkypros.zerochat.entities.User;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,12 +19,12 @@ public class UserManager {
     private final Set<User> connectedUsers = new ConcurrentSkipListSet<>();
 
     public Set<String> getConnectedUsers() {
-        return connectedUsers.stream().map(User::identifier).collect(Collectors.toSet());
+        return connectedUsers.stream().map(User::getIdentifier).collect(Collectors.toSet());
     }
 
-    public Optional<User> findUser(String identifier) {
+    public Optional<User> findUser(@NonNull String identifier) {
         return connectedUsers.stream()
-                .filter(u -> u.identifier().equals(identifier))
+                .filter(u -> identifier.equals(u.getIdentifier()))
                 .findAny();
     }
 
@@ -32,20 +33,20 @@ public class UserManager {
     }
 
     public boolean registerUser(User user) {
-        if (usernameExists(user.identifier())) {
-            throw new IllegalStateException("User Identifier " + user.identifier() + " is taken.");
+        if (usernameExists(user.getIdentifier())) {
+            throw new IllegalStateException("User Identifier " + user.getIdentifier() + " is taken.");
         }
 
-        log.info("User {} connected from {}", user.identifier(), user.ipAddr());
+        log.info("User {} connected from {}", user.getIdentifier(), user.getIpAddr());
         return connectedUsers.add(user);
     }
 
     public void unregisterUser(User user) {
-        if (!usernameExists(user.identifier())) {
-            throw new IllegalStateException("User Identifier " + user.identifier() + " does not exist.");
+        if (!usernameExists(user.getIdentifier())) {
+            throw new IllegalStateException("User Identifier " + user.getIdentifier() + " does not exist.");
         }
 
-        log.info("User {} disconnected from {}", user.identifier(), user.ipAddr());
+        log.info("User {} disconnected from {}", user.getIdentifier(), user.getIpAddr());
         connectedUsers.remove(user);
     }
 }

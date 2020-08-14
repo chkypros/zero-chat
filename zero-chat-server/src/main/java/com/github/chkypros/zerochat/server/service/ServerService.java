@@ -34,14 +34,14 @@ public class ServerService {
     }
 
     public String registerUser(User user) {
-        log.info("User {} connecting from {}", user.identifier(), user.ipAddr());
+        log.info("User {} connecting from {}", user.getIdentifier(), user.getIpAddr());
         return userManager.registerUser(user)
                 ? SUCCESSFUL_CONNECT
                 : FAILED_CONNECT;
     }
 
     public void unregisterUser(User user) {
-        log.info("User {} disconnecting", user.identifier());
+        log.info("User {} disconnecting", user.getIdentifier());
         userManager.unregisterUser(user);
     }
 

@@ -3,6 +3,7 @@ package com.github.chkypros.zerochat.client.service;
 import com.github.chkypros.zerochat.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ClientService {
     private static final Logger log = LoggerFactory.getLogger(ClientService.class);
     private static final String CONNECT_ENDPOINT = "/register";
+    private static final String DISCONNECT_ENDPOINT = "/unregister/{username}";
     private static final String CHECK_USERNAME_ENDPOINT = "/check/{username}";
     private static final String GET_USERS_ENDPOINT = "/users";
     private static final String SUCCESSFUL_CONNECT = "Connected successfully";
@@ -26,6 +28,9 @@ public class ClientService {
     private final String serverUrl;
     private final WebClient webClient;
 
+    private User user;
+
+    @Autowired
     public ClientService(@Value("${application.server.url}") String serverUrl) {
         this.serverUrl = serverUrl;
         this.webClient = WebClient.create(serverUrl);
@@ -47,6 +52,7 @@ public class ClientService {
                 String responseBody = response.bodyToMono(String.class).block();
                 if (response.statusCode().is2xxSuccessful() && SUCCESSFUL_CONNECT.equals(responseBody)) {
                     log.info("Connected to server with username: {}", username);
+                    this.user = userDetails;
                     connectedSuccessfully = true;
                 } else {
                     log.warn("Could not connect to server. Got error response: {}", responseBody);
@@ -91,5 +97,18 @@ public class ClientService {
         }
 
         return Collections.emptyList();
+    }
+
+    public void disconnect() {
+        if (null == user) {
+            // No need to disconnect
+            return;
+        }
+
+        log.info("Disconnecting from server");
+        webClient.delete()
+                .uri(DISCONNECT_ENDPOINT, user.getIdentifier())
+                .exchange()
+                .block();
     }
 }

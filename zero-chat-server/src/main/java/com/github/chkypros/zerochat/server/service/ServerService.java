@@ -40,9 +40,9 @@ public class ServerService {
                 : FAILED_CONNECT;
     }
 
-    public void unregisterUser(User user) {
-        log.info("User {} disconnecting", user.getIdentifier());
-        userManager.unregisterUser(user);
+    public void unregisterUser(String username) {
+        log.info("User {} disconnecting", username);
+        userManager.unregisterUser(username);
     }
 
     public String connectToUser(ChatRequest chatRequest) {

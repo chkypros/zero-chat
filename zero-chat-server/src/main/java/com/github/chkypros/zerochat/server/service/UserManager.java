@@ -41,12 +41,10 @@ public class UserManager {
         return connectedUsers.add(user);
     }
 
-    public void unregisterUser(User user) {
-        if (!usernameExists(user.getIdentifier())) {
-            throw new IllegalStateException("User Identifier " + user.getIdentifier() + " does not exist.");
-        }
-
-        log.info("User {} disconnected from {}", user.getIdentifier(), user.getIpAddr());
+    public void unregisterUser(String username) {
+        User user = findUser(username)
+                .orElseThrow(() -> new IllegalStateException("User Identifier " + username + " does not exist."));
+        log.info("User {} from {} disconnected", username, user.getIpAddr());
         connectedUsers.remove(user);
     }
 }

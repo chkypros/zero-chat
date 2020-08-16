@@ -4,11 +4,7 @@ import com.github.chkypros.zerochat.entities.ChatRequest;
 import com.github.chkypros.zerochat.entities.User;
 import com.github.chkypros.zerochat.server.service.ServerService;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -35,9 +31,9 @@ public class ServerEndpoints {
         return service.registerUser(user);
     }
 
-    @PostMapping("/unregister")
-    public void unregisterUser(@RequestBody User user) {
-        service.unregisterUser(user);
+    @DeleteMapping("/unregister/{username}")
+    public void unregisterUser(@PathVariable String username) {
+        service.unregisterUser(username);
     }
 
     @PostMapping("/connect")
